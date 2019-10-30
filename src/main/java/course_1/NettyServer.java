@@ -7,14 +7,12 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 /**
  * @author peter
  * date: 2019-10-21 13:47
  **/
-public class NettyServer {
+class NettyServer {
 
     public static void main(String[] args) throws InterruptedException {
         //boss线程 用于监听 连接的接入
@@ -43,16 +41,14 @@ public class NettyServer {
 
     private static ChannelFuture bind(final ServerBootstrap serverBootstrap, final int port) throws InterruptedException {
         return serverBootstrap.bind(port)
-                .addListener(new GenericFutureListener<Future<? super Void>>() {
-                    public void operationComplete(Future<? super Void> future) throws Exception {
-                        if (future.isSuccess()) {
+                .addListener(future -> {
+                    if (future.isSuccess()) {
 
-                            System.out.println("端口【" + port + "】绑定成功");
+                        System.out.println("端口【" + port + "】绑定成功");
 
-                        } else {
-                            System.err.println("端口【" + port + "】绑定失败!");
-                            bind(serverBootstrap, port + 1);
-                        }
+                    } else {
+                        System.err.println("端口【" + port + "】绑定失败!");
+                        bind(serverBootstrap, port + 1);
                     }
                 });
     }

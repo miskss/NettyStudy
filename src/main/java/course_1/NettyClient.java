@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @author peter
  * date: 2019-10-21 16:38
  **/
-public class NettyClient {
+class NettyClient {
 
     private static int retry = 0;
 
